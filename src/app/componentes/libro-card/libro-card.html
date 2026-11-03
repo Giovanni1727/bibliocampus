@@ -1,6 +1,18 @@
-<article class="libro">
-    <h3>{{titulo}}</h3>
-    <p>{{autor.toUpperCase()}}</p>
-    <p>{{anio}}</p>
-    <p>{{copias > 0 ? 'Disponible' : 'Agotado' }}</p>
+<article class="card book-card h-100">
+    <div class="cover cv-1" role="img">
+        <span class="cover-letter">{{ titulo.charAt(0) }}</span>
+        <span class="cover-cat">{{ categoria }}</span>
+    </div>
+    <div class="card-body d-flex flex-column p-4">
+        <h3 class="titulo mb-1">{{ titulo }}</h3>
+        <p class="small muted mb-3">{{ autor }}</p>
+        <p class="mb-4">
+            <span class="pill">{{ etiqueta() }}</span>
+        </p>
+        <button type="button" class="btn btn-primary w-100 mt-auto py-2">
+            {{ agotado() ? 'Sin copias disponibles' : 'Solicitar prestamo' }}
+        </button>
+
+        <button type="button" class="btn btn-primary" disabled>Hola</button>
+    </div>
 </article>

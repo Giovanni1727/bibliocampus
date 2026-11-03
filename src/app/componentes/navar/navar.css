@@ -1,0 +1,44 @@
+:host {
+  display: block;
+}
+
+.navbar-upn {
+  background: #000;
+  padding: 0.85rem 0;
+}
+
+.navbar-upn .navbar-brand {
+  color: #fff;
+  font-family: 'Montserrat', 'Inter', sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  font-size: 1.2rem;
+}
+
+.navbar-upn .nav-link {
+  color: rgba(255, 255, 255, 0.82);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+}
+
+.navbar-upn .nav-link:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.navbar-upn .nav-link.is-active {
+  background: #f8b32b;
+  color: #000;
+}
+
+.role-tag {
+  display: inline-block;
+  background: #f8b32b;
+  color: #000;
+  font: 700 0.6875rem/1 'Montserrat', 'Inter', sans-serif;
+  letter-spacing: 0.1em;
+  padding: 0.35rem 0.55rem;
+  border-radius: 6px;
+}
