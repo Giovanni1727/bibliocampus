@@ -1,39 +1,49 @@
 <header class="page-head">
     <div class="container py-5">
-        <p class="eyebrow mb-3">
-            Biblioteca Universitaria
-        </p>
-        <h1> Catalogo de libros</h1>
-        <p class="=on-y fs-5 mb-0 mt-2">
-            Explora el catalogo y soliocita tu préstamo
-        </p>
+        <div class="row align-items-end g-4">
+            <div class="col-lg-6">
+                <p class="eyebrow mb-3">
+                 Biblioteca Universitaria
+                </p>
+                <h1> Catalogo de libros</h1>
+                <p class="on-y fs-5 mb-0 mt-2">
+                    Explora el catalogo y solicita tu préstamo
+                </p>
+                </div>
+                <div class="col-lg-6">
+                    <div class="search-bar" role="search">
+                        <label class="visually-hidden" for="q">
+                            Buscar por título o autor
+                        </label>
+                        <input id="q" type="search" class="form-control" placeholder="Buscar título o autor"
+                        (input)="alEscribir($event)"
+                        (keyup.enter)="alBuscar()"
+                        >
+                        <button class="btn btn-dark px-4" type="button" 
+                        (click)="alBuscar()">
+                        Buscar</button>
+                    </div>
+                </div>
 
+        </div>
     </div>
 
 </header>
-<main class="container">
-    <div class="row">
-        <div class="col">
-             <app-libro-card></app-libro-card> <!---Esto viene desde el libro lista TS-->
-    <!--además, el de arriba es un hijo que viene desde otro lado, eso también lo importo en TS-->
-        </div>
-         <div class="col">
-             <app-libro-card></app-libro-card> <!---Esto viene desde el libro lista TS-->
-    <!--además, el de arriba es un hijo que viene desde otro lado, eso también lo importo en TS-->
-        </div>
 
-    </div>
-    <div class="row">
-        <div class="col">
-             <app-libro-card></app-libro-card> <!---Esto viene desde el libro lista TS-->
-    <!--además, el de arriba es un hijo que viene desde otro lado, eso también lo importo en TS-->
-        </div>
-         <div class="col">
-             <app-libro-card></app-libro-card> <!---Esto viene desde el libro lista TS-->
-    <!--además, el de arriba es un hijo que viene desde otro lado, eso también lo importo en TS-->
-        </div>
+<main class="container py-5">
+    <h2 class="fs-6 fw-bold mb-3">Mostrando {{librosVisibles().length}} libros</h2>
+   <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+         @for (l of librosVisibles(); track l.id){
+            <div class="col">
+                <!--Mostrar librocard-->
+                <app-libro-card [libro]="l" (prestamoSolicitado)="alSolicitar($event)"></app-libro-card>
+            </div>
 
-    </div>
+
+        }@empty {
+        <p class="muted">No se encontraros criterios</p>
+    }
+   </div>
 
   
 </main>

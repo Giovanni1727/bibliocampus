@@ -1,4 +1,7 @@
-import { Component, computed, signal } from '@angular/core';
+// Agregamos 'input' a la lista de importaciones
+import { Component, computed, signal, input, output } from '@angular/core'; 
+import { Libro } from '../../modelos/libro';
+import { ConstantPool } from '@angular/compiler';
 
 @Component({
   imports: [],
@@ -7,17 +10,21 @@ import { Component, computed, signal } from '@angular/core';
   templateUrl: './libro-card.html',
 })
 export class LibroCard {
-  titulo: string = "Clean code libro";
-  autor: string = "Robert C. Martin";
-  anio: number = 2008;
-  copias = signal(3);
-  categoria = "Buenas practicas";
+  // Comunicación Padre -> hijo
+  libro = input.required<Libro>();
 
-  protected agotado = computed(() => this.copias() === 0);
+  // Comunicacion Hijo -> Padre
+  prestamoSolicitado = output<Libro>();
+
+  protected agotado = computed(() => this.libro().copiasDisponibles === 0);
+  
   protected etiqueta = computed(() => 
-    this.agotado() ? 'Agotado' : `Disponible - ${this.copias()} ${this.copias() === 1 ? 'copia' : 'copias'}`
+    this.agotado() ? 'Agotado' : `Disponible - ${this.libro().copiasDisponibles} ${this.libro().copiasDisponibles === 1 ? 'copia' : 'copias'}`
   );
-  protected alSolicitar():void{
-    this.copias.update ((c)=> c + 1)
+
+  protected alSolicitar(): void {
+    
+    console.log(this.libro());
+    this.prestamoSolicitado.emit(this.libro());
   }
 }
