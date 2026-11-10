@@ -1,7 +1,8 @@
-import { Component, signal,computed } from '@angular/core';
+import { Component, signal,computed, inject } from '@angular/core';
 import { LibroCard } from '../libro-card/libro-card';
 import { LIBROS } from '../../data/libros';
 import { Libro } from '../../modelos/libro';
+import { LibroService } from '../../servicios/libro-service';
 
 @Component({
   imports: [LibroCard],
@@ -10,17 +11,28 @@ import { Libro } from '../../modelos/libro';
   templateUrl: './libro-lista.html',
 })
 export class LibroLista {
-  protected libros = signal<Libro[]>(LIBROS); //Data de libros
+  private libroService = inject(LibroService);
+  
+  protected libros = signal<Libro[]>([]);
   protected terminoBusqueda = signal('');
   protected borrador = signal('');
+  protected cargando = signal(false);
+  protected mensaje =signal<string|null>(null);
 
-  protected librosVisibles = computed(()=>{
-    const temp = this.terminoBusqueda().toLowerCase();
-    return this.libros().filter(
-      (libro) => !temp || libro.titulo.toLowerCase().includes(temp) ||
-      libro.autor.toLowerCase().includes(temp)
-    )
-  });
+  constructor(){
+    this.cargar();
+  }
+
+  //Pide los libros al servicio
+
+  private cargar():void{
+    this.cargando.set(true);
+    this.libroService.listar(this.terminoBusqueda()).subscribe((librosServicio => {
+      this.libros.set(librosServicio);
+      this.cargando.set(false);
+    }))
+
+  }
 
   protected alEscribir(evento:Event ):void{
    this.borrador.set((evento.target as HTMLInputElement).value);
@@ -28,15 +40,16 @@ export class LibroLista {
 
   protected alBuscar():void{
     this.terminoBusqueda.set(this.borrador().trim());
+    this.cargar();
   }
 
   protected alSolicitar(libro: Libro): void {
-    // Actualizar las copias disponibles llamando a update directamente sobre la señal
-    this.libros.update((lista) => 
-      lista.map((l) => 
-        l.id === libro.id ? { ...l, copiasDisponibles: l.copiasDisponibles - 1 } : l
-      )
-    );
+    // Llama al servicio, y cuando termine, recarga la lista
+    this.libroService.descontarCopia(libro.id).subscribe(()=>{
+      this.mensaje.set(`solicitaste ${libro.titulo}`);
+      this.cargar(); // <-- Cambiado de cargando() a cargar()
+    });
   }
 
 }
+

@@ -10,7 +10,7 @@ import { ConstantPool } from '@angular/compiler';
   templateUrl: './libro-card.html',
 })
 export class LibroCard {
-  // Comunicación Padre -> hijo
+  // ComunicaciÃ³n Padre -> hijo
   libro = input.required<Libro>();
 
   // Comunicacion Hijo -> Padre
@@ -28,3 +28,4 @@ export class LibroCard {
     this.prestamoSolicitado.emit(this.libro());
   }
 }
+

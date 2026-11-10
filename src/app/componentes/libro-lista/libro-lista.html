@@ -7,15 +7,15 @@
                 </p>
                 <h1> Catalogo de libros</h1>
                 <p class="on-y fs-5 mb-0 mt-2">
-                    Explora el catalogo y solicita tu préstamo
+                    Explora el catalogo y solicita tu prÃ©stamo
                 </p>
                 </div>
                 <div class="col-lg-6">
                     <div class="search-bar" role="search">
                         <label class="visually-hidden" for="q">
-                            Buscar por título o autor
+                            Buscar por tÃ­tulo o autor
                         </label>
-                        <input id="q" type="search" class="form-control" placeholder="Buscar título o autor"
+                        <input id="q" type="search" class="form-control" placeholder="Buscar tÃ­tulo o autor"
                         (input)="alEscribir($event)"
                         (keyup.enter)="alBuscar()"
                         >
@@ -31,19 +31,26 @@
 </header>
 
 <main class="container py-5">
-    <h2 class="fs-6 fw-bold mb-3">Mostrando {{librosVisibles().length}} libros</h2>
-   <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-         @for (l of librosVisibles(); track l.id){
-            <div class="col">
-                <!--Mostrar librocard-->
-                <app-libro-card [libro]="l" (prestamoSolicitado)="alSolicitar($event)"></app-libro-card>
+    <h2 class="fs-6 fw-bold mb-3">Mostrando {{libros().length}} libros</h2>
+    
+    @if (cargando()) {
+        <div class="text-center py-5">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">
+                    Cargando...
+                </span>
             </div>
-
-
-        }@empty {
-        <p class="muted">No se encontraros criterios</p>
+        </div>
+    } @else {
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            @for (l of libros(); track l.id) {
+                <div class="col">
+                    <!--Mostrar librocard-->
+                    <app-libro-card [libro]="l" (prestamoSolicitado)="alSolicitar($event)"></app-libro-card>
+                </div>
+            } @empty {
+                <p class="text-muted">No se encontraron resultados para tu bÃºsqueda</p>
+            }
+        </div>
     }
-   </div>
-
-  
 </main>
